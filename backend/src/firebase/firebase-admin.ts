@@ -8,6 +8,11 @@ if (!serviceAccountJSON) {
 
 const serviceAccount = JSON.parse(serviceAccountJSON);
 
+// Fix escaped newlines in private key for proper PEM format
+if (serviceAccount.private_key) {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+}
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });

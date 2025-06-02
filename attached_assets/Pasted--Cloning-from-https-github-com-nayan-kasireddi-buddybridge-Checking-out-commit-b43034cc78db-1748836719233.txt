@@ -1,0 +1,67 @@
+==> Cloning from https://github.com/nayan-kasireddi/buddybridge
+==> Checking out commit b43034cc78dbc5280c94a7e1752cb45f38a5caec in branch main
+==> Using Node.js version 22.14.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a bun version: https://render.com/docs/bun-version
+==> Running build command 'cd backend && npm install && npm run build'...
+added 684 packages, and audited 685 packages in 9s
+120 packages are looking for funding
+  run `npm fund` for details
+found 0 vulnerabilities
+> backend@0.0.1 build
+> npx nest build
+==> Uploading build...
+==> Uploaded in 4.2s. Compression took 3.7s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'cd backend && npm run start:prod'
+> backend@0.0.1 start:prod
+> node dist/main.js
+/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:182
+            throw new error_1.FirebaseAppError(error_1.AppErrorCodes.INVALID_CREDENTIAL, 'Failed to parse private key: ' + error);
+            ^
+FirebaseAppError: Failed to parse private key: Error: Invalid PEM formatted message.
+    at new ServiceAccount (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:182:19)
+    at new ServiceAccountCredential (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:118:15)
+    at Object.cert (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-factory.js:105:54)
+    at Object.<anonymous> (/opt/render/project/src/backend/dist/firebase/firebase-admin.js:10:34)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24) {
+  errorInfo: {
+    code: 'app/invalid-credential',
+    message: 'Failed to parse private key: Error: Invalid PEM formatted message.'
+  },
+  codePrefix: 'app'
+}
+Node.js v22.14.0
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'cd backend && npm run start:prod'
+> backend@0.0.1 start:prod
+> node dist/main.js
+/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:182
+            throw new error_1.FirebaseAppError(error_1.AppErrorCodes.INVALID_CREDENTIAL, 'Failed to parse private key: ' + error);
+            ^
+FirebaseAppError: Failed to parse private key: Error: Invalid PEM formatted message.
+    at new ServiceAccount (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:182:19)
+    at new ServiceAccountCredential (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-internal.js:118:15)
+    at Object.cert (/opt/render/project/src/backend/node_modules/firebase-admin/lib/app/credential-factory.js:105:54)
+    at Object.<anonymous> (/opt/render/project/src/backend/dist/firebase/firebase-admin.js:10:34)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24) {
+  errorInfo: {
+    code: 'app/invalid-credential',
+    message: 'Failed to parse private key: Error: Invalid PEM formatted message.'
+  },
+  codePrefix: 'app'
+}
+Node.js v22.14.0
