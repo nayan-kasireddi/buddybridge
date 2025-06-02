@@ -16,5 +16,10 @@ export class UserService {
   async getRole(uid: string) {
     return this.firebaseAuthService.getUserRole(uid);
   }
+
+  async findAllUsers() {
+    return this.firebaseAuthService.listAllUsers();
+  }
 }
+
 

@@ -16,5 +16,10 @@ export class UserController {
     const role = await this.userService.getRole(uid);
     return { uid, role };
   }
-}
 
+  @Get()
+  async getAllUsers() {
+    const users = await this.userService.findAllUsers();
+    return users;
+  }
+}
