@@ -1,14 +1,14 @@
-import * as admin from 'firebase-admin';
+// src/firebase/firebase-admin.ts
+import * as adminSdk from 'firebase-admin';
 
-const serviceAccount = {
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  // Replace literal '\n' with actual newlines in private key string
-  privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-};
+if (!adminSdk.apps.length) {
+  adminSdk.initializeApp({
+    credential: adminSdk.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
+  });
+}
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-export { admin };
+export const admin = adminSdk;
