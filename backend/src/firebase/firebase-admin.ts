@@ -1,13 +1,14 @@
 import * as admin from 'firebase-admin';
 
-if (!admin.apps.length) {
-  const config = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON!);
-  if (config.private_key) {
-    config.private_key = config.private_key.replace(/\\n/g, '\n');
-  }
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON || '{}');
+if (serviceAccount.private_key) {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+}
 
+// Initialize once only
+if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(config),
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 
