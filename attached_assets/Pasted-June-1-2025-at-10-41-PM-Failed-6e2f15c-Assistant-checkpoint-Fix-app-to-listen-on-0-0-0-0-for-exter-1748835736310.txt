@@ -1,0 +1,32 @@
+June 1, 2025 at 10:41 PM
+Failed
+6e2f15c
+Assistant checkpoint: Fix app to listen on 0.0.0.0 for external access Assistant generated file changes: - backend/src/main.ts: Make app listen on 0.0.0.0 for external access --- User prompt: :=+*+=+++****++==+++*+++++++***+++++++++***********+=. .::-====-::--: .:-=++=====+++*++====++++++++++++++++++=+++*************+=======++++==--. .--==-----=====++=============+=+++=====++++****************+=+=========--:. . . :--====------=======--==========+++=====++++****+*****+****++===------====-. ...::::::::---====----------::::::-----========++++++++++***++++++++===--:::::-----. ...::::::..:::::---::::::::::...::::::::-----=++++++++++****+++++++===-:::::::::---: .::::.....:::::::::::................:::::=++++++++++*****++++++=====---:::::---::. ...... ......... ...............::=+==++++++++++++++============-----::...: ........::---===-===============------=---:::::::::... .......................::::::::---------:. .. ....................::::::--:::::. ........... Hmm... We couldn't reach this app Make sure this app has a port open and is ready to receive HTTP traffic. Go to Replit Learn more about hosting on Replit Replit-Commit-Author: Assistant Replit-Commit-Session-Id: 129c7d7c-2a22-4137-b0a1-3d68dbe51ea1
+
+Rollback
+Exited with status 127 while building your code.
+Read our docs for common ways to troubleshoot your deploy.
+
+All logs
+Search
+
+
+Live tail
+CDT
+
+Menu
+==> Cloning from https://github.com/nayan-kasireddi/buddybridge
+==> Checking out commit 6e2f15c17b6a6584808bce4b2108f1960eeab3c2 in branch main
+==> Using Node.js version 22.14.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install && npm run build'...
+added 347 packages, and audited 348 packages in 5s
+57 packages are looking for funding
+  run `npm fund` for details
+found 0 vulnerabilities
+> backend@0.0.1 build
+> nest build
+sh: 1: nest: not found
+==> Build failed 😞
