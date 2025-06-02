@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { FirebaseAuthService } from './firebase/firebase-auth.service';
 import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
@@ -25,7 +27,7 @@ import { MatchmakingService } from './matchmaking/matchmaking.service';
     }),
     TypeOrmModule.forFeature([User]),
   ],
-  providers: [FirebaseAuthService, UserService, SessionService, FeedbackService, MatchmakingService],
-  controllers: [UserController, SessionController, FeedbackController, MatchmakingController],
+  providers: [AppService, FirebaseAuthService, UserService, SessionService, FeedbackService, MatchmakingService],
+  controllers: [AppController, UserController, SessionController, FeedbackController, MatchmakingController],
 })
 export class AppModule {}
