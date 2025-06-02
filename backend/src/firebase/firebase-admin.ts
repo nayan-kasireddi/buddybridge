@@ -1,18 +1,15 @@
 import * as admin from 'firebase-admin';
-import * as path from 'path';
 
-const sdkPath = process.env.FIREBASE_ADMIN_SDK_PATH;
+const serviceAccountJSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 
-if (!sdkPath) {
-  throw new Error('FIREBASE_ADMIN_SDK_PATH is not defined in environment variables');
+if (!serviceAccountJSON) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON env var is not set');
 }
 
-// If sdkPath is relative, resolve relative to project root or __dirname.
-// If sdkPath is absolute, use it directly.
-const resolvedPath = path.isAbsolute(sdkPath) ? sdkPath : path.resolve(__dirname, sdkPath);
+const serviceAccount = JSON.parse(serviceAccountJSON);
 
 admin.initializeApp({
-  credential: admin.credential.cert(resolvedPath),
+  credential: admin.credential.cert(serviceAccount),
 });
 
 export default admin;
