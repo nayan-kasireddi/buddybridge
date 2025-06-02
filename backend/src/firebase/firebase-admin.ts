@@ -1,19 +1,14 @@
 import * as admin from 'firebase-admin';
 
-const serviceAccountJSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-if (!serviceAccountJSON) {
-  throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON environment variable is not set');
-}
-
-const serviceAccount = JSON.parse(serviceAccountJSON);
-
-// Fix escaped newlines in private key for proper PEM format
-if (serviceAccount.private_key) {
-  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-}
+const serviceAccount = {
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  // Replace literal '\n' with actual newlines in private key string
+  privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+};
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-export default admin;
+export { admin };
