@@ -2,7 +2,10 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 
 // Load environment variables from .env file
-dotenv.config({ path: path.join(__dirname, '../.env') });
+// In production, environment variables should be set via Render's dashboard
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: path.join(__dirname, '../.env') });
+}
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
