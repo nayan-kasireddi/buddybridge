@@ -1,15 +1,14 @@
 import * as admin from 'firebase-admin';
 
-const firebaseConfig = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON || '{}');
+if (!admin.apps.length) {
+  const config = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON!);
+  if (config.private_key) {
+    config.private_key = config.private_key.replace(/\\n/g, '\n');
+  }
 
-// Fix escaped newlines in private key
-if (firebaseConfig.private_key) {
-  firebaseConfig.private_key = firebaseConfig.private_key.replace(/\\n/g, '\n');
+  admin.initializeApp({
+    credential: admin.credential.cert(config),
+  });
 }
-
-admin.initializeApp({
-  credential: admin.credential.cert(firebaseConfig),
-});
-
 
 export default admin;
