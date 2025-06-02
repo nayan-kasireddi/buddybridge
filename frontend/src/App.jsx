@@ -1,16 +1,23 @@
-import React from 'react';
-
-const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://your-backend-name.onrender.com' 
-  : 'http://localhost:3000';
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { fetchUsers } from './apiClient';
 import { signup, login, logout } from "./firebaseAuth";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+
+  const [users, setUsers] = useState([]);
+  const [fetchError, setFetchError] = useState(null);
+
+  useEffect(() => {
+    fetchUsers()
+      .then(data => setUsers(data))
+      .catch(err => setFetchError(err.message));
+  }, []);
 
   const handleSignup = async () => {
     try {
@@ -66,6 +73,20 @@ function App() {
           {error && <p style={{ color: "red" }}>{error}</p>}
         </>
       )}
+
+      <div style={{ marginTop: '2rem' }}>
+        <h2>Users from Backend</h2>
+        {fetchError && <p style={{ color: 'red' }}>Error fetching users: {fetchError}</p>}
+        {users.length > 0 ? (
+          <ul>
+            {users.map(user => (
+              <li key={user.uid}>{user.name || user.uid}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Loading users...</p>
+        )}
+      </div>
     </div>
   );
 }
