@@ -12,4 +12,8 @@ export class FirebaseAuthService {
     const role = user.customClaims?.role as string | undefined;
     return role ?? null;
   }
+
+  async verifyToken(idToken: string) {
+    return admin.auth().verifyIdToken(idToken);
+  }
 }
