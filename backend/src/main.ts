@@ -1,8 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-// Load environment variables from .env file
-// In production, environment variables should be set via Render's dashboard
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: path.join(__dirname, '../.env') });
 }
@@ -13,10 +11,14 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS - merged both variants:
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'https://buddybridge.vercel.app' || 'http://localhost:5173',
+    origin: [
+      process.env.FRONTEND_URL || 'https://buddybridge.vercel.app',
+      'http://localhost:5173',
+    ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   const port = process.env.PORT || 3000;
