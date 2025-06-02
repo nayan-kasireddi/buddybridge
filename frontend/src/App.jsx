@@ -1,3 +1,8 @@
+import React from 'react';
+
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://your-backend-name.onrender.com' 
+  : 'http://localhost:3000';
 import { useState } from "react";
 import { signup, login, logout } from "./firebaseAuth";
 
