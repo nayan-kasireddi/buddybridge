@@ -1,21 +1,18 @@
-// src/firebase/firebase-admin.ts
 import * as admin from 'firebase-admin';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as path from 'path';
 
-const serviceAccountPath = process.env.FIREBASE_ADMIN_SDK_PATH;
-console.log('FIREBASE_ADMIN_SDK_PATH:', process.env.FIREBASE_ADMIN_SDK_PATH);
+const sdkPath = process.env.FIREBASE_ADMIN_SDK_PATH;
 
-if (!serviceAccountPath) {
-  throw new Error('FIREBASE_ADMIN_SDK_PATH is not defined in .env');
+if (!sdkPath) {
+  throw new Error('FIREBASE_ADMIN_SDK_PATH is not defined in environment variables');
 }
 
-const serviceAccount = JSON.parse(
-  readFileSync(join(process.cwd(), serviceAccountPath), 'utf8'),
-);
+// If sdkPath is relative, resolve relative to project root or __dirname.
+// If sdkPath is absolute, use it directly.
+const resolvedPath = path.isAbsolute(sdkPath) ? sdkPath : path.resolve(__dirname, sdkPath);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(resolvedPath),
 });
 
 export default admin;
