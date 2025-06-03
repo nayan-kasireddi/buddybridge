@@ -8,5 +8,3 @@ import { ProfileService } from './profile/profile.service';
   providers: [ProfileService],
 })
 export class AppModule {}
-
-
