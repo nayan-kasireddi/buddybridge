@@ -13,8 +13,8 @@ import { SessionController } from './session/session.controller';
 import { SessionService } from './session/session.service';
 import { FeedbackController } from './feedback/feedback.controller';
 import { FeedbackService } from './feedback/feedback.service';
-import { MatchmakingController } from './matchmaking/matchmaking.controller';
-import { MatchmakingService } from './matchmaking/matchmaking.service';
+
+
 import { ProfileController } from './profile/profile.controller';
 import { ProfileService } from './profile/profile.service';
 
@@ -34,7 +34,6 @@ import { ProfileService } from './profile/profile.service';
     UserController,
     SessionController,
     FeedbackController,
-    MatchmakingController,
     ProfileController,
   ],
   providers: [
@@ -43,7 +42,6 @@ import { ProfileService } from './profile/profile.service';
     UserService,
     SessionService,
     FeedbackService,
-    MatchmakingService,
     ProfileService,
   ],
 })
