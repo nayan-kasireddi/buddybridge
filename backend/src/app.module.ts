@@ -16,6 +16,9 @@ import { FeedbackService } from './feedback/feedback.service';
 import { MatchmakingController } from './matchmaking/matchmaking.controller';
 import { MatchmakingService } from './matchmaking/matchmaking.service';
 
+import { ProfileController } from './profile/profile.controller';
+import { ProfileService } from './profile/profile.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -27,7 +30,22 @@ import { MatchmakingService } from './matchmaking/matchmaking.service';
     }),
     TypeOrmModule.forFeature([User]),
   ],
-  providers: [AppService, FirebaseAuthService, UserService, SessionService, FeedbackService, MatchmakingService],
-  controllers: [AppController, UserController, SessionController, FeedbackController, MatchmakingController],
+  controllers: [
+    AppController,
+    UserController,
+    SessionController,
+    FeedbackController,
+    MatchmakingController,
+    ProfileController, // ✅ include this
+  ],
+  providers: [
+    AppService,
+    FirebaseAuthService,
+    UserService,
+    SessionService,
+    FeedbackService,
+    MatchmakingService,
+    ProfileService, // ✅ include this
+  ],
 })
 export class AppModule {}
