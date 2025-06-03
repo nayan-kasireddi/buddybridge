@@ -1,51 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
-import { FirebaseAuthService } from './firebase/firebase-auth.service';
-
-import { User } from './entity/User';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
-
 import { ProfileController } from './profile/profile.controller';
 import { ProfileService } from './profile/profile.service';
 
-import { SessionController } from './session/session.controller';
-import { SessionService } from './session/session.service';
-
-import { FeedbackController } from './feedback/feedback.controller';
-import { FeedbackService } from './feedback/feedback.service';
-
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-    TypeOrmModule.forFeature([User]),
-  ],
-  controllers: [
-    AppController,
-    UserController,
-    ProfileController,
-    SessionController,
-    FeedbackController,
-  ],
-  providers: [
-    AppService,
-    FirebaseAuthService,
-    UserService,
-    ProfileService,
-    SessionService,
-    FeedbackService,
-  ],
+  imports: [],
+  controllers: [ProfileController],
+  providers: [ProfileService],
 })
 export class AppModule {}
+
 
