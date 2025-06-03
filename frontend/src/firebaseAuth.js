@@ -1,4 +1,3 @@
-// /frontend/src/firebaseAuth.js
 import app from "./firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
@@ -15,3 +14,5 @@ export const login = (email, password) => {
 export const logout = () => {
   return signOut(auth);
 };
+
+export { auth };
