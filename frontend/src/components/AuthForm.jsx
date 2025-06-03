@@ -2,26 +2,21 @@ import React, { useState } from 'react';
 import { signup, login } from '../firebaseAuth';
 import { Button, TextInput, Title, Paper, Text } from '@mantine/core';
 
-const AuthForm = () => {
+const AuthForm = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      if (isLogin) {
-        await login(email, password);
-      } else {
-        await signup(email, password);
-      }
-      console.log('Success! API Base URL:', apiUrl);
+      const authFunc = isLogin ? login : signup;
+      const userCredential = await authFunc(email, password);
+      onAuthSuccess && onAuthSuccess(userCredential.user);
     } catch (err) {
       setError(err.message || 'Failed to authenticate');
     }
