@@ -27,6 +27,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
+    "@supabase/supabase-js": "^2.49.9",
     "dotenv": "^16.5.0",
     "firebase-admin": "^13.4.0",
     "pg": "^8.16.0",

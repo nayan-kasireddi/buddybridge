@@ -15,7 +15,6 @@ import { FeedbackController } from './feedback/feedback.controller';
 import { FeedbackService } from './feedback/feedback.service';
 import { MatchmakingController } from './matchmaking/matchmaking.controller';
 import { MatchmakingService } from './matchmaking/matchmaking.service';
-
 import { ProfileController } from './profile/profile.controller';
 import { ProfileService } from './profile/profile.service';
 
@@ -36,7 +35,7 @@ import { ProfileService } from './profile/profile.service';
     SessionController,
     FeedbackController,
     MatchmakingController,
-    ProfileController, // ✅ include this
+    ProfileController,
   ],
   providers: [
     AppService,
@@ -45,7 +44,7 @@ import { ProfileService } from './profile/profile.service';
     SessionService,
     FeedbackService,
     MatchmakingService,
-    ProfileService, // ✅ include this
+    ProfileService,
   ],
 })
 export class AppModule {}
