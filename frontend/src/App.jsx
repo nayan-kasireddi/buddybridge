@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { fetchUsers } from './apiClient';
 import AuthForm from './components/AuthForm';
 import { logout } from './firebaseAuth';
+import ProfileSetup from './components/ProfileSetup';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [authToken, setAuthToken] = useState('');
   const [users, setUsers] = useState([]);
   const [fetchError, setFetchError] = useState(null);
 
@@ -14,9 +17,25 @@ function App() {
       .catch(err => setFetchError(err.message));
   }, []);
 
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        const token = await firebaseUser.getIdToken();
+        setAuthToken(token);
+      } else {
+        setUser(null);
+        setAuthToken('');
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleLogout = async () => {
     await logout();
     setUser(null);
+    setAuthToken('');
   };
 
   return (
@@ -29,6 +48,9 @@ function App() {
         <>
           <p>Welcome, {user.email}</p>
           <button onClick={handleLogout}>Logout</button>
+
+          {/* Show Profile Setup */}
+          <ProfileSetup />
         </>
       )}
 
