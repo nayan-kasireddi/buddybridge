@@ -202,46 +202,43 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#333' }}>
             Age * {role && ['Urban', 'Rural', 'NRI'].includes(role) ? '(8-17 years)' : '(18+ years)'}
           </label>
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              const minAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18;
-              const maxAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 17 : 100;
-              
-              // Allow empty input or validate range
-              if (e.target.value === '' || (value >= minAge && value <= maxAge)) {
-                setAge(e.target.value);
-              }
-            }}
-            onBlur={(e) => {
-              // Ensure value is within range on blur
-              const value = parseInt(e.target.value);
-              const minAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18;
-              const maxAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 17 : 100;
-              
-              if (value < minAge) {
-                setAge(minAge.toString());
-              } else if (value > maxAge) {
-                setAge(maxAge.toString());
-              }
-            }}
-            required
-            min={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "8" : "18"}
-            max={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "17" : "100"}
-            placeholder="Enter your age"
-            style={{
-              width: '100%',
-              padding: '0.8rem',
-              border: '2px solid #e5e7eb',
-              borderRadius: '10px',
-              fontSize: '1rem',
-              backgroundColor: '#ffffff',
-              color: '#333333',
-              // Custom slider styling
-              accentColor: '#667eea'
-            }}
+          <div style={{ position: 'relative' }}>
+            <input
+              type="range"
+              value={age || (role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18)}
+              onChange={(e) => setAge(e.target.value)}
+              required
+              min={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "8" : "18"}
+              max={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "17" : "100"}
+              style={{
+                width: '100%',
+                height: '8px',
+                borderRadius: '5px',
+                background: '#e5e7eb',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            />
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '0.5rem',
+              fontSize: '0.875rem',
+              color: '#666'
+            }}>
+              <span>{role && ['Urban', 'Rural', 'NRI'].includes(role) ? '8' : '18'}</span>
+              <span style={{ 
+                fontWeight: '600', 
+                color: '#667eea',
+                background: '#f0f4ff',
+                padding: '0.25rem 0.5rem',
+                borderRadius: '4px'
+              }}>
+                {age || (role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18)} years
+              </span>
+              <span>{role && ['Urban', 'Rural', 'NRI'].includes(role) ? '17' : '100'}</span>
+            </div>
+          </div>
           />
           <style>{`
             input[type="number"]::-webkit-outer-spin-button,
