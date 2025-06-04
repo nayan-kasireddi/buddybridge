@@ -111,11 +111,11 @@ const AuthForm = ({ onAuthSuccess }) => {
         user = await signIn(email, password);
         setSuccess('Welcome back!');
       }
-      
+
       setTimeout(() => {
         onAuthSuccess(user);
       }, 1200);
-      
+
     } catch (error) {
       console.error('Authentication error:', error);
       setError(getErrorMessage(error));
@@ -138,7 +138,7 @@ const AuthForm = ({ onAuthSuccess }) => {
       minHeight: '600px',
       position: 'relative'
     }}>
-      
+
       {/* Left side - Branding */}
       <div style={{
         flex: '1',
@@ -161,24 +161,53 @@ const AuthForm = ({ onAuthSuccess }) => {
           background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
           opacity: 0.3
         }} />
-        
+
         <div style={{ 
           background: 'rgba(255, 255, 255, 0.15)',
           borderRadius: '50%',
           padding: '1.5rem',
           marginBottom: '2rem',
           backdropFilter: 'blur(10px)',
-          width: '80px',
-          height: '80px',
+          width: '100px',
+          height: '100px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-6h2.5l.5 5.5s1 1.5 1 1.5V22h-2v-3H4zM12.5 11.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S10.17 10 11 10s1.5.67 1.5 1.5zM5.5 6C4.67 6 4 6.67 4 7.5S4.67 9 5.5 9 7 8.33 7 7.5 6.33 6 5.5 6zm6-2C10.67 4 10 4.67 10 5.5S10.67 7 11.5 7 13 6.33 13 5.5 12.33 4 11.5 4zM20 15l-1.5-1.5L17 15l1.5 1.5L20 15z"/>
+          {/* Bridge SVG Icon */}
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor" style={{ position: 'relative', zIndex: 2 }}>
+            <path d="M8 16h8v2H8zm4-12c-4.42 0-8 3.58-8 8h2c0-3.31 2.69-6 6-6s6 2.69 6 6h2c0-4.42-3.58-8-8-8z"/>
+            <path d="M5 13c0-3.87 3.13-7 7-7s7 3.13 7 7h-2c0-2.76-2.24-5-5-5s-5 2.24-5 5H5z"/>
+            <circle cx="7" cy="16" r="1"/>
+            <circle cx="17" cy="16" r="1"/>
+            <path d="M2 18h20v2H2z"/>
           </svg>
+
+          {/* Decorative dots around the circle */}
+          <div style={{
+            position: 'absolute',
+            top: '10px',
+            right: '15px',
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.6)',
+            animation: 'pulse 2s infinite'
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '15px',
+            left: '12px',
+            width: '3px',
+            height: '3px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.4)',
+            animation: 'pulse 2s infinite 0.5s'
+          }} />
         </div>
-        
+
         <h1 style={{ 
           fontSize: '2.5rem',
           marginBottom: '1rem',
@@ -187,7 +216,7 @@ const AuthForm = ({ onAuthSuccess }) => {
         }}>
           BuddyBridge
         </h1>
-        
+
         <p style={{ 
           fontSize: '1.2rem',
           opacity: 0.9,
@@ -197,7 +226,7 @@ const AuthForm = ({ onAuthSuccess }) => {
         }}>
           Building bridges between Urban/NRI and Rural kids in India through meaningful friendships and shared learning.
         </p>
-        
+
         <div style={{
           marginTop: '2rem',
           display: 'flex',
@@ -220,7 +249,7 @@ const AuthForm = ({ onAuthSuccess }) => {
         flexDirection: 'column',
         justifyContent: 'center'
       }}>
-        
+
         <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
           <h2 style={{ 
             fontSize: '2rem',
@@ -549,7 +578,21 @@ const AuthForm = ({ onAuthSuccess }) => {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-        
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 0.3;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.8;
+          }
+        }
+
         @media (max-width: 768px) {
           .auth-container {
             flex-direction: column !important;
