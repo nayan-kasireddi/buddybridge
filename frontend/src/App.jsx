@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { fetchUsers } from './apiClient';
 import AuthForm from './components/AuthForm';
 import Dashboard from './components/Dashboard';
-import { logout } from './firebaseAuth';
 import ProfileSetup from './components/ProfileSetup';
+import AdminDashboard from './components/AdminDashboard';
+import { logout } from './firebaseAuth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function App() {
@@ -11,6 +12,8 @@ function App() {
   const [authToken, setAuthToken] = useState('');
   const [users, setUsers] = useState([]);
   const [fetchError, setFetchError] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [currentView, setCurrentView] = useState('dashboard');
 
   useEffect(() => {
     fetchUsers()
@@ -25,64 +28,194 @@ function App() {
         setUser(firebaseUser);
         const token = await firebaseUser.getIdToken();
         setAuthToken(token);
+        // Fetch user profile after authentication
+        await fetchUserProfile(firebaseUser.uid, token);
       } else {
         setUser(null);
         setAuthToken('');
+        setUserProfile(null);
       }
     });
     return () => unsubscribe();
   }, []);
 
+  const fetchUserProfile = async (uid, token) => {
+    try {
+      const response = await fetch(`https://buddybridge-backend-dlkk.onrender.com/profile/${uid}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const profile = await response.json();
+        setUserProfile(profile);
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
   const handleLogout = async () => {
     await logout();
     setUser(null);
     setAuthToken('');
+    setUserProfile(null);
+    setCurrentView('dashboard');
+  };
+
+  const handleProfileComplete = (profile) => {
+    setUserProfile(profile);
+    setCurrentView('dashboard');
+  };
+
+  const renderCurrentView = () => {
+    if (!userProfile) {
+      return <ProfileSetup onProfileComplete={handleProfileComplete} />;
+    }
+
+    switch (currentView) {
+      case 'admin':
+        return userProfile.role === 'Admin' ? 
+          <AdminDashboard user={user} userProfile={userProfile} /> : 
+          <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
+      case 'profile':
+        return <ProfileSetup onProfileComplete={handleProfileComplete} existingProfile={userProfile} />;
+      default:
+        return <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
+    }
   };
 
   return (
-    <div style={{ 
-      padding: '2rem', 
+    <div style={{
+      padding: user ? '0' : '2rem',
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: user ? 'flex-start' : 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)'
     }}>
-      <h1 style={{ 
-        textAlign: 'center', 
-        marginBottom: user ? '2rem' : '3rem',
-        fontSize: user ? '3rem' : '4rem',
-        fontWeight: 'bold',
-        color: '#333',
-        margin: user ? '1rem 0 2rem 0' : '0 0 3rem 0'
-      }}>
-        BuddyBridge
-      </h1>
-      
+      {!user && (
+        <h1 style={{
+          textAlign: 'center',
+          marginBottom: '3rem',
+          fontSize: '4rem',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}>
+          BuddyBridge
+        </h1>
+      )}
+
       {!user ? (
         <div style={{
           width: '100%',
-          maxWidth: '400px',
-          padding: '2rem',
+          maxWidth: '900px',
           borderRadius: '12px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          backgroundColor: 'white'
+          overflow: 'hidden'
         }}>
           <AuthForm onAuthSuccess={(u) => setUser(u)} />
         </div>
       ) : (
         <div style={{
           width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flex: 1
+          minHeight: '100vh'
         }}>
-          <Dashboard user={user} onLogout={handleLogout} />
+          {/* Navigation Bar */}
+          <nav style={{
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            padding: '1rem 2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            boxShadow: '0 2px 20px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h2 style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontSize: '1.8rem',
+              fontWeight: '700',
+              margin: 0
+            }}>
+              BuddyBridge
+            </h2>
+            
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <button
+                onClick={() => setCurrentView('dashboard')}
+                style={{
+                  background: currentView === 'dashboard' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                  color: currentView === 'dashboard' ? 'white' : '#667eea',
+                  border: '2px solid #667eea',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                Dashboard
+              </button>
+              
+              {userProfile?.role === 'Admin' && (
+                <button
+                  onClick={() => setCurrentView('admin')}
+                  style={{
+                    background: currentView === 'admin' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                    color: currentView === 'admin' ? 'white' : '#667eea',
+                    border: '2px solid #667eea',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  Admin Panel
+                </button>
+              )}
+              
+              <button
+                onClick={() => setCurrentView('profile')}
+                style={{
+                  background: currentView === 'profile' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                  color: currentView === 'profile' ? 'white' : '#667eea',
+                  border: '2px solid #667eea',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                Profile
+              </button>
+              
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: '#ef4444',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          </nav>
+
+          {/* Main Content */}
+          <div style={{ padding: '2rem' }}>
+            {renderCurrentView()}
+          </div>
         </div>
       )}
 
-      {/* Small fixed user list */}
+      {/* Debug: Show registered users */}
       {users.length > 0 && (
         <div style={{
           position: 'fixed',
@@ -95,12 +228,15 @@ function App() {
           borderRadius: 4,
           overflowY: 'auto',
           maxHeight: '80vh',
-          boxShadow: '0 0 6px rgba(0,0,0,0.1)'
+          boxShadow: '0 0 6px rgba(0,0,0,0.1)',
+          zIndex: 1000
         }}>
-          <strong>Users from Backend</strong>
+          <strong>Registered Users ({users.length})</strong>
           <ul style={{ paddingLeft: '1rem', margin: 0 }}>
-            {users.map(user => (
-              <li key={user.uid}>{user.name || user.uid}</li>
+            {users.map(u => (
+              <li key={u.uid}>
+                {u.name || u.email} ({u.role})
+              </li>
             ))}
           </ul>
         </div>
