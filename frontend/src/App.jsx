@@ -234,11 +234,16 @@ function App() {
         }}>
           <strong>Registered Users ({users.length})</strong>
           <ul style={{ paddingLeft: '1rem', margin: 0 }}>
-            {users.map(u => (
-              <li key={u.uid}>
-                {u.name || u.email} ({u.role})
-              </li>
-            ))}
+            {users.map(u => {
+              const displayEmail = u.email ? 
+                '*'.repeat(Math.min(5, u.email.indexOf('@'))) + u.email.substring(Math.min(5, u.email.indexOf('@'))) :
+                'No email';
+              return (
+                <li key={u.uid}>
+                  {u.name || displayEmail} ({u.role})
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
