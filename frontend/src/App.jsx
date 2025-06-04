@@ -3,7 +3,7 @@ import { fetchUsers } from './apiClient';
 import AuthForm from './components/AuthForm';
 import Dashboard from './components/Dashboard';
 import ProfileSetup from './components/ProfileSetup';
-import AdminDashboard from './components/AdminDashboard';
+// Removed import AdminDashboard
 import { logout } from './firebaseAuth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -28,7 +28,6 @@ function App() {
         setUser(firebaseUser);
         const token = await firebaseUser.getIdToken();
         setAuthToken(token);
-        // Fetch user profile after authentication
         await fetchUserProfile(firebaseUser.uid, token);
       } else {
         setUser(null);
@@ -75,9 +74,7 @@ function App() {
 
     switch (currentView) {
       case 'admin':
-        return userProfile.role === 'Admin' ? 
-          <AdminDashboard user={user} userProfile={userProfile} /> : 
-          <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
+        return <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
       case 'profile':
         return <ProfileSetup onProfileComplete={handleProfileComplete} existingProfile={userProfile} />;
       default:
@@ -158,7 +155,7 @@ function App() {
               >
                 Dashboard
               </button>
-              
+
               {userProfile?.role === 'Admin' && (
                 <button
                   onClick={() => setCurrentView('admin')}
@@ -175,7 +172,7 @@ function App() {
                   Admin Panel
                 </button>
               )}
-              
+
               <button
                 onClick={() => setCurrentView('profile')}
                 style={{
@@ -190,7 +187,7 @@ function App() {
               >
                 Profile
               </button>
-              
+
               <button
                 onClick={handleLogout}
                 style={{
