@@ -1,5 +1,6 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { FirebaseAuthGuard } from '../firebase/firebase-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -21,5 +22,15 @@ export class UserController {
   async getAllUsers() {
     const users = await this.userService.findAllUsers();
     return users;
+  }
+
+  // ✅ NEW: Save profile form data to Supabase
+  @Post()
+  @UseGuards(FirebaseAuthGuard)
+  async createProfile(@Body() body: any, @Req() req: any) {
+    const { role, name, location } = body;
+    const uid = req.user.uid;
+
+    return this.userService.createOrUpdateUserProfile(uid, role, name, location);
   }
 }

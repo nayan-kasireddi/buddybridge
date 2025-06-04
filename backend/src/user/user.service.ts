@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { FirebaseAuthService } from '../firebase/firebase-auth.service';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
+
 
 @Injectable()
 export class UserService {
@@ -20,6 +27,23 @@ export class UserService {
   async findAllUsers() {
     return this.firebaseAuthService.listAllUsers();
   }
+
+  async createOrUpdateUserProfile(uid: string, role: string, name: string, location: string) {
+  const { error } = await supabase.from('user_profiles').upsert({
+    uid,
+    role,
+    name,
+    location,
+  });
+
+  if (error) {
+    console.error('Error saving profile to Supabase:', error);
+    throw new Error('Failed to save user profile');
+  }
+
+  return { message: 'User profile saved successfully' };
+}
+
 }
 
 
