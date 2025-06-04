@@ -205,7 +205,28 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
           <input
             type="number"
             value={age}
-            onChange={(e) => setAge(e.target.value)}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              const minAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18;
+              const maxAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 17 : 100;
+              
+              // Allow empty input or validate range
+              if (e.target.value === '' || (value >= minAge && value <= maxAge)) {
+                setAge(e.target.value);
+              }
+            }}
+            onBlur={(e) => {
+              // Ensure value is within range on blur
+              const value = parseInt(e.target.value);
+              const minAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 8 : 18;
+              const maxAge = role && ['Urban', 'Rural', 'NRI'].includes(role) ? 17 : 100;
+              
+              if (value < minAge) {
+                setAge(minAge.toString());
+              } else if (value > maxAge) {
+                setAge(maxAge.toString());
+              }
+            }}
             required
             min={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "8" : "18"}
             max={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "17" : "100"}
@@ -217,9 +238,68 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               borderRadius: '10px',
               fontSize: '1rem',
               backgroundColor: '#ffffff',
-              color: '#333333'
+              color: '#333333',
+              // Custom slider styling
+              accentColor: '#667eea'
             }}
           />
+          <style>{`
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+            
+            input[type="number"] {
+              -moz-appearance: textfield;
+            }
+            
+            input[type="range"] {
+              -webkit-appearance: none;
+              appearance: none;
+              height: 8px;
+              border-radius: 5px;
+              background: #e5e7eb;
+              outline: none;
+            }
+            
+            input[type="range"]::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              cursor: pointer;
+              border: 2px solid white;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            }
+            
+            input[type="range"]::-moz-range-thumb {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              cursor: pointer;
+              border: 2px solid white;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            }
+            
+            input[type="range"]::-webkit-slider-track {
+              -webkit-appearance: none;
+              appearance: none;
+              height: 8px;
+              border-radius: 5px;
+              background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+            }
+            
+            input[type="range"]::-moz-range-track {
+              height: 8px;
+              border-radius: 5px;
+              background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+              border: none;
+            }
+          `}</style>
         </div>
 
         {/* Location */}
