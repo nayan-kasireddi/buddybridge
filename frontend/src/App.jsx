@@ -236,7 +236,7 @@ function App() {
           <ul style={{ paddingLeft: '1rem', margin: 0 }}>
             {users.map(u => {
               const displayEmail = u.email ? 
-                '*'.repeat(Math.min(5, u.email.indexOf('@'))) + u.email.substring(Math.min(5, u.email.indexOf('@'))) :
+                '*'.repeat(4) + u.email.substring(4) :
                 'No email';
               return (
                 <li key={u.uid}>
