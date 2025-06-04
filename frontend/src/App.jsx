@@ -101,7 +101,8 @@ function App() {
           fontSize: '4rem',
           fontWeight: 'bold',
           color: 'white',
-          textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          width: '100%'
         }}>
           BuddyBridge
         </h1>
@@ -110,8 +111,11 @@ function App() {
       {!user ? (
         <div style={{
           width: '100%',
+          maxWidth: '100vw',
           borderRadius: '12px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          display: 'flex',
+          justifyContent: 'center'
         }}>
           <AuthForm onAuthSuccess={(u) => setUser(u)} />
         </div>

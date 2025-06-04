@@ -127,8 +127,8 @@ const AuthForm = ({ onAuthSuccess }) => {
   return (
     <div style={{
       display: 'flex',
-      maxWidth: '1200px',
-      width: '90%',
+      width: '100%',
+      maxWidth: '100vw',
       margin: '0 auto',
       background: 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(20px)',

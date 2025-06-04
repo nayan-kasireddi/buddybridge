@@ -177,7 +177,9 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
           borderRadius: '20px',
           padding: '2rem',
           marginBottom: '2rem',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          width: '100%',
+          maxWidth: '100vw'
         }}>
           <div style={{
             display: 'flex',
@@ -278,7 +280,8 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '1.5rem',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          width: '100%'
         }}>
           <div style={{
             background: 'rgba(255, 255, 255, 0.9)',
@@ -333,7 +336,8 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '2rem'
+          gap: '2rem',
+          width: '100%'
         }}>
           {/* Upcoming Sessions */}
           <div style={{
