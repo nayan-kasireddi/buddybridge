@@ -33,7 +33,7 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
     const auth = getAuth();
     const user = auth.currentUser;
     if (!user) throw new Error('User not logged in');
-    
+
     const token = await user.getIdToken();
     const response = await fetch('https://buddybridge-backend-dlkk.onrender.com/profile', {
       method: existingProfile ? 'PUT' : 'POST',
@@ -101,12 +101,12 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
 
       const result = await saveProfile(profileData);
       setSuccess(existingProfile ? 'Profile updated successfully!' : 'Profile created successfully!');
-      
+
       // Call the callback to update parent component
       if (onProfileComplete) {
         onProfileComplete(profileData);
       }
-      
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -181,7 +181,8 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#ffffff',
+              color: '#333333'
             }}
           />
         </div>
@@ -205,7 +206,8 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#ffffff',
+              color: '#333333'
             }}
           />
         </div>
@@ -227,7 +229,8 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#ffffff',
+              color: '#333333'
             }}
           />
         </div>
