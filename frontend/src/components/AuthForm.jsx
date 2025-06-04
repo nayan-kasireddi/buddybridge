@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { signup, login } from '../firebaseAuth';
-import { Button, TextInput, Title, Paper, Text } from '@mantine/core';
+import { Button, TextInput, Title, Paper, Text, Stack } from '@mantine/core';
 
 const AuthForm = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState('');
@@ -19,49 +19,55 @@ const AuthForm = ({ onAuthSuccess }) => {
       onAuthSuccess && onAuthSuccess(userCredential.user);
     } catch (err) {
       setError(err.message || 'Failed to authenticate');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <Paper p="md" shadow="sm" style={{ maxWidth: 400, margin: 'auto' }}>
-      <Title style={{ textAlign: 'center', marginBottom: 16 }}>
-        {isLogin ? 'Login' : 'Sign Up'}
-      </Title>
-      <form onSubmit={handleSubmit}>
-        <TextInput
-          label="Email"
-          placeholder="your@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.currentTarget.value)}
-          required
-          mb={16}
-          type="email"
-        />
-        <TextInput
-          label="Password"
-          placeholder="Your password"
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          required
-          mb={16}
-          type="password"
-        />
-        {error && (
-          <Text color="red" size="sm" mb={16}>
-            {error}
-          </Text>
-        )}
-        <Button type="submit" fullWidth loading={loading}>
-          {isLogin ? 'Login' : 'Create Account'}
-        </Button>
-      </form>
-      <Text
-        style={{ textAlign: 'center', marginTop: 16, cursor: 'pointer', color: 'blue' }}
-        onClick={() => setIsLogin(!isLogin)}
-      >
-        {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
-      </Text>
+    <Paper p="xl" shadow="md" style={{ maxWidth: 400, margin: 'auto' }}>
+      <Stack spacing="md">
+        <Title order={2} align="center">
+          {isLogin ? 'Login' : 'Sign Up'}
+        </Title>
+        <form onSubmit={handleSubmit}>
+          <Stack spacing="sm">
+            <TextInput
+              label="Email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              required
+              type="email"
+            />
+            <TextInput
+              label="Password"
+              placeholder="Your password"
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+              required
+              type="password"
+            />
+            {error && (
+              <Text color="red" size="sm" align="center">
+                {error}
+              </Text>
+            )}
+            <Button type="submit" fullWidth loading={loading}>
+              {isLogin ? 'Login' : 'Create Account'}
+            </Button>
+          </Stack>
+        </form>
+        <Text
+          align="center"
+          color="blue"
+          style={{ cursor: 'pointer' }}
+          onClick={() => setIsLogin(!isLogin)}
+          size="sm"
+        >
+          {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
+        </Text>
+      </Stack>
     </Paper>
   );
 };

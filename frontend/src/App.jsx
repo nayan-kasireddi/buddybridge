@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUsers } from './apiClient';
 import AuthForm from './components/AuthForm';
+import Dashboard from './components/Dashboard';  // <-- add this import
 import { logout } from './firebaseAuth';
 import ProfileSetup from './components/ProfileSetup';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -46,11 +47,8 @@ function App() {
         <AuthForm onAuthSuccess={(u) => setUser(u)} />
       ) : (
         <>
-          <p>Welcome, {user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-
-          {/* Show Profile Setup */}
-          <ProfileSetup />
+          {/* Use Dashboard component when logged in */}
+          <Dashboard user={user} onLogout={handleLogout} />
         </>
       )}
 
