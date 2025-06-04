@@ -40,32 +40,42 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Firebase Auth Demo</h1>
+<div style={{ padding: '2rem' }}>
+  <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>BuddyBridge</h1>
 
-      {!user ? (
-        <AuthForm onAuthSuccess={(u) => setUser(u)} />
-      ) : (
-        <>
-          {/* Use Dashboard component when logged in */}
-          <Dashboard user={user} onLogout={handleLogout} />
-        </>
-      )}
+  {!user ? (
+    <AuthForm onAuthSuccess={(u) => setUser(u)} />
+  ) : (
+    <>
+      <Dashboard user={user} onLogout={handleLogout} />
+    </>
+  )}
 
-      <div style={{ marginTop: '2rem' }}>
-        <h2>Users from Backend</h2>
-        {fetchError && <p style={{ color: 'red' }}>Error fetching users: {fetchError}</p>}
-        {users.length > 0 ? (
-          <ul>
-            {users.map(user => (
-              <li key={user.uid}>{user.name || user.uid}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Loading users...</p>
-        )}
-      </div>
+  {/* Small fixed user list */}
+  {users.length > 0 && (
+    <div style={{ 
+      position: 'fixed', 
+      top: 10, 
+      right: 10, 
+      maxWidth: 200, 
+      fontSize: '0.75rem', 
+      background: '#f0f0f0', 
+      padding: '0.5rem', 
+      borderRadius: 4, 
+      overflowY: 'auto', 
+      maxHeight: '80vh',
+      boxShadow: '0 0 6px rgba(0,0,0,0.1)'
+    }}>
+      <strong>Users from Backend</strong>
+      <ul style={{ paddingLeft: '1rem', margin: 0 }}>
+        {users.map(user => (
+          <li key={user.uid}>{user.name || user.uid}</li>
+        ))}
+      </ul>
     </div>
+  )}
+</div>
+
   );
 }
 
