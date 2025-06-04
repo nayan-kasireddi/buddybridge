@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextInput, PasswordInput, Button, Alert, Text, Divider, Loader } from '@mantine/core';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { TextInput, PasswordInput, Button, Alert, Text, Divider, Loader, Paper, Group } from '@mantine/core';
+import { IconAlertCircle, IconCheck, IconMail, IconLock } from '@tabler/icons-react';
 import { signIn, signUp } from '../firebaseAuth';
 
 const AuthForm = ({ onAuthSuccess }) => {
@@ -39,25 +39,23 @@ const AuthForm = ({ onAuthSuccess }) => {
 
     switch (errorCode) {
       case 'auth/user-not-found':
-        return 'No account found with this email address. Please check your email or sign up for a new account.';
+        return 'No account found with this email address.';
       case 'auth/wrong-password':
-        return 'Incorrect password. Please check your password and try again.';
+        return 'Incorrect password. Please try again.';
       case 'auth/invalid-email':
         return 'Please enter a valid email address.';
       case 'auth/user-disabled':
-        return 'This account has been disabled. Please contact support.';
+        return 'This account has been disabled.';
       case 'auth/too-many-requests':
-        return 'Too many failed attempts. Please wait a moment before trying again.';
+        return 'Too many failed attempts. Please wait before trying again.';
       case 'auth/weak-password':
-        return 'Password is too weak. Please use at least 6 characters.';
+        return 'Password must be at least 6 characters long.';
       case 'auth/email-already-in-use':
-        return 'An account with this email already exists. Please try logging in instead.';
-      case 'auth/operation-not-allowed':
-        return 'Email/password accounts are not enabled. Please contact support.';
+        return 'An account with this email already exists.';
       case 'auth/invalid-credential':
-        return 'Invalid login credentials. Please check your email and password.';
+        return 'Invalid email or password. Please check your credentials and try again.';
       default:
-        return errorMessage || 'An unexpected error occurred. Please try again.';
+        return 'Authentication failed. Please try again.';
     }
   };
 
@@ -101,7 +99,7 @@ const AuthForm = ({ onAuthSuccess }) => {
       }
 
       if (password !== confirmPassword) {
-        setError('Passwords do not match. Please try again.');
+        setError('Passwords do not match.');
         setLoading(false);
         return;
       }
@@ -114,13 +112,13 @@ const AuthForm = ({ onAuthSuccess }) => {
         setSuccess('Account created successfully! Welcome to BuddyBridge!');
       } else {
         user = await signIn(email, password);
-        setSuccess('Login successful! Welcome back!');
+        setSuccess('Welcome back!');
       }
       
       // Wait a moment to show success message
       setTimeout(() => {
         onAuthSuccess(user);
-      }, 1000);
+      }, 1200);
       
     } catch (error) {
       console.error('Authentication error:', error);
@@ -131,136 +129,249 @@ const AuthForm = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '400px' }}>
-      <Text 
-        size="xl" 
-        weight={600} 
-        align="center" 
-        style={{ 
-          marginBottom: '2rem',
-          fontSize: '1.5rem',
-          color: '#333'
-        }}
-      >
-        {isSignUp ? 'Create Your Account' : 'Welcome Back'}
-      </Text>
-
-      {error && (
-        <Alert 
-          icon={<IconAlertCircle size="1rem" />} 
-          title="Authentication Error" 
-          color="red" 
-          style={{ marginBottom: '1rem' }}
-          variant="filled"
-        >
-          {error}
-        </Alert>
-      )}
-
-      {success && (
-        <Alert 
-          icon={<IconCheck size="1rem" />} 
-          title="Success!" 
-          color="green" 
-          style={{ marginBottom: '1rem' }}
-          variant="filled"
-        >
-          {success}
-        </Alert>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <TextInput
-          label="Email Address"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          size="md"
-          style={{ marginBottom: '1rem' }}
-          error={email && !isValidEmail(email) ? 'Please enter a valid email' : null}
-        />
-
-        <PasswordInput
-          label="Password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          size="md"
-          style={{ marginBottom: isSignUp ? '1rem' : '1.5rem' }}
-        />
-
-        {isSignUp && (
-          <PasswordInput
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+    <Paper 
+      shadow="xl" 
+      p="xl" 
+      radius="lg"
+      style={{
+        width: '100%',
+        maxWidth: '450px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        border: 'none'
+      }}
+    >
+      <div style={{
+        background: 'white',
+        borderRadius: '12px',
+        padding: '2.5rem',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+      }}>
+        
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <Text 
+            size="xl" 
+            weight={700}
+            style={{ 
+              fontSize: '2rem',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              marginBottom: '0.5rem'
+            }}
+          >
+            {isSignUp ? 'Join BuddyBridge' : 'Welcome Back'}
+          </Text>
+          <Text 
+            color="dimmed" 
             size="md"
-            style={{ marginBottom: '1.5rem' }}
-            error={confirmPassword && password !== confirmPassword ? 'Passwords do not match' : null}
-          />
+            style={{ fontSize: '1rem' }}
+          >
+            {isSignUp ? 'Create your account to get started' : 'Sign in to your account'}
+          </Text>
+        </div>
+
+        {error && (
+          <Alert 
+            icon={<IconAlertCircle size="1.2rem" />} 
+            color="red" 
+            radius="md"
+            style={{ 
+              marginBottom: '1.5rem',
+              backgroundColor: '#fee2e2',
+              border: '1px solid #fecaca',
+              color: '#dc2626'
+            }}
+            variant="light"
+          >
+            <Text weight={500} size="sm">{error}</Text>
+          </Alert>
         )}
 
-        <Button
-          type="submit"
-          fullWidth
-          size="lg"
-          loading={loading}
+        {success && (
+          <Alert 
+            icon={<IconCheck size="1.2rem" />} 
+            color="green" 
+            radius="md"
+            style={{ 
+              marginBottom: '1.5rem',
+              backgroundColor: '#dcfce7',
+              border: '1px solid #bbf7d0',
+              color: '#16a34a'
+            }}
+            variant="light"
+          >
+            <Text weight={500} size="sm">{success}</Text>
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ marginBottom: '1.5rem' }}>
+          <TextInput
+            label="Email Address"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            size="lg"
+            radius="md"
+            icon={<IconMail size="1.1rem" />}
+            style={{ marginBottom: '1.2rem' }}
+            styles={{
+              label: { 
+                fontSize: '0.95rem', 
+                fontWeight: 600, 
+                color: '#374151',
+                marginBottom: '0.5rem'
+              },
+              input: { 
+                height: '50px',
+                fontSize: '1rem',
+                border: '2px solid #e5e7eb',
+                '&:focus': {
+                  borderColor: '#667eea',
+                  boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                }
+              }
+            }}
+          />
+
+          <PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            size="lg"
+            radius="md"
+            icon={<IconLock size="1.1rem" />}
+            style={{ marginBottom: isSignUp ? '1.2rem' : '2rem' }}
+            styles={{
+              label: { 
+                fontSize: '0.95rem', 
+                fontWeight: 600, 
+                color: '#374151',
+                marginBottom: '0.5rem'
+              },
+              input: { 
+                height: '50px',
+                fontSize: '1rem',
+                border: '2px solid #e5e7eb',
+                '&:focus': {
+                  borderColor: '#667eea',
+                  boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                }
+              }
+            }}
+          />
+
+          {isSignUp && (
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              size="lg"
+              radius="md"
+              icon={<IconLock size="1.1rem" />}
+              style={{ marginBottom: '2rem' }}
+              styles={{
+                label: { 
+                  fontSize: '0.95rem', 
+                  fontWeight: 600, 
+                  color: '#374151',
+                  marginBottom: '0.5rem'
+                },
+                input: { 
+                  height: '50px',
+                  fontSize: '1rem',
+                  border: '2px solid #e5e7eb',
+                  '&:focus': {
+                    borderColor: '#667eea',
+                    boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }
+                }
+              }}
+              error={confirmPassword && password !== confirmPassword ? 'Passwords do not match' : null}
+            />
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            size="lg"
+            radius="md"
+            loading={loading}
+            disabled={loading}
+            style={{ 
+              height: '55px',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)'
+              }
+            }}
+            styles={{
+              root: {
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%)',
+                  transform: 'translateY(-1px)'
+                }
+              }
+            }}
+          >
+            {loading ? (
+              <Group spacing="sm">
+                <Loader size="sm" color="white" />
+                <Text>{isSignUp ? 'Creating Account...' : 'Signing In...'}</Text>
+              </Group>
+            ) : (
+              isSignUp ? 'Create Account' : 'Sign In'
+            )}
+          </Button>
+        </form>
+
+        <Divider 
+          labelPosition="center" 
+          style={{ margin: '1.5rem 0' }}
+          styles={{
+            label: { 
+              color: '#6b7280',
+              fontSize: '0.9rem'
+            }
+          }}
+        />
+
+        <Text 
+          align="center" 
+          size="md" 
           style={{ 
-            height: '50px',
-            fontSize: '1.1rem',
-            fontWeight: '600',
-            marginBottom: '1rem'
+            color: '#6b7280',
+            fontSize: '1rem'
           }}
         >
-          {loading ? (
-            <Loader size="sm" color="white" />
-          ) : (
-            isSignUp ? 'Create Account' : 'Sign In'
-          )}
-        </Button>
-      </form>
-
-      <Divider 
-        label="or" 
-        labelPosition="center" 
-        style={{ margin: '1.5rem 0' }} 
-      />
-
-      <Text align="center" size="sm" style={{ marginBottom: '1rem' }}>
-        {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-      </Text>
-
-      <Button
-        variant="outline"
-        fullWidth
-        size="md"
-        onClick={toggleMode}
-        disabled={loading}
-        style={{ 
-          height: '45px',
-          fontSize: '1rem'
-        }}
-      >
-        {isSignUp ? 'Sign In Instead' : 'Create New Account'}
-      </Button>
-
-      <Text 
-        size="xs" 
-        color="dimmed" 
-        align="center" 
-        style={{ marginTop: '1.5rem', lineHeight: 1.4 }}
-      >
-        {isSignUp ? (
-          'By creating an account, you agree to our Terms of Service and Privacy Policy.'
-        ) : (
-          'Having trouble signing in? Make sure your email and password are correct.'
-        )}
-      </Text>
-    </div>
+          {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+          <Text
+            component="span"
+            weight={600}
+            style={{
+              color: '#667eea',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              '&:hover': {
+                color: '#5a6fd8'
+              }
+            }}
+            onClick={toggleMode}
+          >
+            {isSignUp ? 'Sign In' : 'Sign Up'}
+          </Text>
+        </Text>
+      </div>
+    </Paper>
   );
 };
 
