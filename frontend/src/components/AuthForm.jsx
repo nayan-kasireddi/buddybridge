@@ -127,15 +127,16 @@ const AuthForm = ({ onAuthSuccess }) => {
   return (
     <div style={{
       display: 'flex',
-      width: '100%',
-      maxWidth: '100vw',
+      width: '95vw',
+      maxWidth: '1200px',
       margin: '0 auto',
       background: 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(20px)',
       borderRadius: '20px',
       overflow: 'hidden',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-      minHeight: '600px'
+      minHeight: '600px',
+      position: 'relative'
     }}>
       
       {/* Left side - Branding */}

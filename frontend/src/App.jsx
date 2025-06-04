@@ -91,8 +91,9 @@ function App() {
       justifyContent: user ? 'flex-start' : 'center',
       alignItems: 'center',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-      width: '100%',
-      margin: '0 auto'
+      width: '100vw',
+      margin: '0',
+      position: 'relative'
     }}>
       {!user && (
         <h1 style={{
@@ -111,11 +112,9 @@ function App() {
       {!user ? (
         <div style={{
           width: '100%',
-          maxWidth: '100vw',
-          borderRadius: '12px',
-          overflow: 'hidden',
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          alignItems: 'center'
         }}>
           <AuthForm onAuthSuccess={(u) => setUser(u)} />
         </div>
