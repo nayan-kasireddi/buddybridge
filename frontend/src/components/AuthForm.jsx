@@ -130,12 +130,17 @@ const AuthForm = ({ onAuthSuccess }) => {
     <Box
       style={{
         minHeight: '100vh',
+        width: '100vw',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-        padding: '2rem 1rem',
-        position: 'relative',
+        padding: '0',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         overflow: 'hidden'
       }}
     >
@@ -167,7 +172,14 @@ const AuthForm = ({ onAuthSuccess }) => {
         }}
       />
       
-      <Container size="md" style={{ width: '100%', maxWidth: '900px', zIndex: 1 }}>
+      <div style={{ 
+        width: '90%', 
+        maxWidth: '1000px', 
+        zIndex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
         <Paper 
           shadow="2xl" 
           radius="xl"
@@ -175,10 +187,18 @@ const AuthForm = ({ onAuthSuccess }) => {
             background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(255, 255, 255, 0.2)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100%',
+            maxWidth: '900px'
           }}
         >
-          <div style={{ display: 'flex', minHeight: '600px' }}>
+          <div style={{ 
+            display: 'flex', 
+            minHeight: '600px',
+            '@media (max-width: 768px)': {
+              flexDirection: 'column'
+            }
+          }}>
             
             {/* Left side - Branding */}
             <div style={{
@@ -494,9 +514,9 @@ const AuthForm = ({ onAuthSuccess }) => {
             </div>
           </div>
         </Paper>
-      </Container>
+      </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);
@@ -507,7 +527,7 @@ const AuthForm = ({ onAuthSuccess }) => {
         }
         
         @media (max-width: 768px) {
-          .auth-container {
+          .auth-flex {
             flex-direction: column !important;
           }
           .auth-left {
