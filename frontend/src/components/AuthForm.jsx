@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextInput, PasswordInput, Button, Alert, Text, Divider, Loader, Paper, Group } from '@mantine/core';
 import { IconAlertCircle, IconCheck, IconMail, IconLock } from '@tabler/icons-react';
-import { signIn, signUp } from '../firebaseAuth';
+import { login as signIn, signup as signUp } from '../firebaseAuth';
 
 const AuthForm = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState('');
