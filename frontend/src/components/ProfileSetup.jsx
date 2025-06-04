@@ -152,7 +152,9 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#fafafa',
+              color: '#333333',
+              outline: 'none'
             }}
           >
             <option value="" disabled>Select your role</option>
@@ -250,7 +252,9 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#fafafa',
+              color: '#333333',
+              outline: 'none'
             }}
           >
             <option value="" disabled>Select preferred language</option>
@@ -308,7 +312,9 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               border: '2px solid #e5e7eb',
               borderRadius: '10px',
               fontSize: '1rem',
-              backgroundColor: '#fafafa'
+              backgroundColor: '#fafafa',
+              color: '#333333',
+              outline: 'none'
             }}
           >
             <option value="">Select your preferred time</option>
