@@ -87,9 +87,19 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
     setLocation(value);
     
     if (value.length > 0) {
-      const filtered = locations.filter(loc => 
-        loc.toLowerCase().includes(value.toLowerCase())
-      );
+      const filtered = locations.filter(loc => {
+        const lowerLoc = loc.toLowerCase();
+        const lowerValue = value.toLowerCase();
+        
+        // Check if location starts with the search value
+        if (lowerLoc.startsWith(lowerValue)) {
+          return true;
+        }
+        
+        // Check if any word in the location starts with the search value
+        const words = lowerLoc.split(' ');
+        return words.some(word => word.startsWith(lowerValue));
+      });
       setLocationSuggestions(filtered.slice(0, 5)); // Show top 5 matches
       setShowSuggestions(true);
     } else {
