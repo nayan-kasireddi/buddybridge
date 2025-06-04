@@ -195,7 +195,7 @@ const AuthForm = ({ onAuthSuccess }) => {
           maxWidth: '280px',
           margin: 0
         }}>
-          Connect with friends, share moments, and build lasting relationships in our vibrant community.
+          Building bridges between Urban/NRI and Rural kids in India through meaningful friendships and shared learning.
         </p>
         
         <div style={{
@@ -206,9 +206,9 @@ const AuthForm = ({ onAuthSuccess }) => {
           opacity: 0.8
         }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-6h2.5l.5 5.5s1 1.5 1 1.5V22h-2v-3H4zM12.5 11.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S10.17 10 11 10s1.5.67 1.5 1.5z"/>
           </svg>
-          <span>Join thousands of happy users</span>
+          <span>Empowering cross-cultural friendships</span>
         </div>
       </div>
 
@@ -228,14 +228,14 @@ const AuthForm = ({ onAuthSuccess }) => {
             marginBottom: '0.5rem',
             fontWeight: '700'
           }}>
-            {isSignUp ? 'Create Account' : 'Welcome Back'}
+            {isSignUp ? 'Join BuddyBridge' : 'Welcome Back'}
           </h2>
           <p style={{ 
             fontSize: '1rem', 
             color: '#666',
             margin: 0
           }}>
-            {isSignUp ? 'Join our community today' : 'Sign in to continue your journey'}
+            {isSignUp ? 'Start building meaningful connections across India' : 'Continue your buddy journey'}
           </p>
         </div>
 
