@@ -161,12 +161,10 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
       }} />
 
       <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
+        width: '100%',
         padding: '2rem',
         position: 'relative',
         zIndex: 1,
-        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'

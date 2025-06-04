@@ -110,7 +110,6 @@ function App() {
       {!user ? (
         <div style={{
           width: '100%',
-          maxWidth: '900px',
           borderRadius: '12px',
           overflow: 'hidden'
         }}>
