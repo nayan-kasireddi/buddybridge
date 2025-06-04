@@ -135,7 +135,10 @@ const AuthForm = ({ onAuthSuccess }) => {
       borderRadius: '20px',
       overflow: 'hidden',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-      minHeight: '600px'
+      minHeight: '600px',
+      position: 'relative',
+      left: '50%',
+      transform: 'translateX(-50%)'
     }}>
       
       {/* Left side - Branding */}

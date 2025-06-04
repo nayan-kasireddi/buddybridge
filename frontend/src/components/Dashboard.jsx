@@ -165,7 +165,11 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
         margin: '0 auto',
         padding: '2rem',
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}>
         {/* Header Section */}
         <div style={{

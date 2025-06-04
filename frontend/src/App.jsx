@@ -90,7 +90,9 @@ function App() {
       flexDirection: 'column',
       justifyContent: user ? 'flex-start' : 'center',
       alignItems: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)'
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+      width: '100%',
+      margin: '0 auto'
     }}>
       {!user && (
         <h1 style={{
