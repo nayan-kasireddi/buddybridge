@@ -12,11 +12,34 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const availableInterests = [
     'Arts & Crafts', 'Sports', 'Music', 'Reading', 'Technology', 
     'Cooking', 'Dancing', 'Photography', 'Games', 'Nature',
     'Science', 'History', 'Languages', 'Movies', 'Travel'
+  ];
+
+  const locations = [
+    // US States
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 
+    'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 
+    'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 
+    'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 
+    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 
+    'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 
+    'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 
+    'Wisconsin', 'Wyoming',
+    // Indian States
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 
+    'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 
+    'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 
+    'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 
+    'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+    // Union Territories
+    'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 
+    'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'
   ];
 
   const languageOptions = [
@@ -57,6 +80,28 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
         ? prev.filter(i => i !== interest)
         : [...prev, interest]
     );
+  };
+
+  const handleLocationChange = (e) => {
+    const value = e.target.value;
+    setLocation(value);
+    
+    if (value.length > 0) {
+      const filtered = locations.filter(loc => 
+        loc.toLowerCase().includes(value.toLowerCase())
+      );
+      setLocationSuggestions(filtered.slice(0, 5)); // Show top 5 matches
+      setShowSuggestions(true);
+    } else {
+      setLocationSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleLocationSelect = (selectedLocation) => {
+    setLocation(selectedLocation);
+    setLocationSuggestions([]);
+    setShowSuggestions(false);
   };
 
   const handleSubmit = async (e) => {
@@ -299,16 +344,25 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
         </div>
 
         {/* Location */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#333' }}>
-            Location *
+            Location * (US States / Indian States)
           </label>
           <input
             type="text"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={handleLocationChange}
+            onFocus={() => {
+              if (location.length > 0) {
+                setShowSuggestions(true);
+              }
+            }}
+            onBlur={() => {
+              // Delay hiding suggestions to allow click selection
+              setTimeout(() => setShowSuggestions(false), 200);
+            }}
             required
-            placeholder={`Enter your ${role.toLowerCase()} location`}
+            placeholder="Start typing a US state or Indian state..."
             style={{
               width: '100%',
               padding: '0.8rem',
@@ -319,6 +373,43 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               color: '#333333'
             }}
           />
+          {showSuggestions && locationSuggestions.length > 0 && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              backgroundColor: 'white',
+              border: '2px solid #e5e7eb',
+              borderTop: 'none',
+              borderRadius: '0 0 10px 10px',
+              maxHeight: '200px',
+              overflowY: 'auto',
+              zIndex: 1000,
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}>
+              {locationSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleLocationSelect(suggestion)}
+                  style={{
+                    padding: '0.8rem',
+                    cursor: 'pointer',
+                    borderBottom: index < locationSuggestions.length - 1 ? '1px solid #f0f0f0' : 'none',
+                    transition: 'background-color 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#f8f9fa';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'white';
+                  }}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Language Preference */}
@@ -351,7 +442,7 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
         {/* Interests */}
         <div style={{ marginBottom: '1.5rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#333' }}>
-            Interests (Select up to 5)
+            Interests (Select up to 3)
           </label>
           <div style={{
             display: 'grid',
@@ -363,7 +454,7 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
                 key={interest}
                 type="button"
                 onClick={() => handleInterestToggle(interest)}
-                disabled={!interests.includes(interest) && interests.length >= 5}
+                disabled={!interests.includes(interest) && interests.length >= 3}
                 style={{
                   padding: '0.5rem',
                   border: '2px solid',
@@ -373,7 +464,7 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
                   color: interests.includes(interest) ? 'white' : '#333',
                   cursor: 'pointer',
                   fontSize: '0.85rem',
-                  opacity: (!interests.includes(interest) && interests.length >= 5) ? '0.5' : '1'
+                  opacity: (!interests.includes(interest) && interests.length >= 3) ? '0.5' : '1'
                 }}
               >
                 {interest}
