@@ -239,7 +239,6 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
               <span>{role && ['Urban', 'Rural', 'NRI'].includes(role) ? '17' : '100'}</span>
             </div>
           </div>
-          />
           <style>{`
             input[type="number"]::-webkit-outer-spin-button,
             input[type="number"]::-webkit-inner-spin-button {
