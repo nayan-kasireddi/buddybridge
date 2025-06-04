@@ -79,9 +79,17 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
         return;
       }
 
-      if (age < 8 || age > 18) {
-        setError('Age must be between 8 and 18 years.');
-        return;
+      // Age validation based on role
+      if (['Urban', 'Rural', 'NRI'].includes(role)) {
+        if (age < 8 || age > 17) {
+          setError('Age must be between 8 and 17 years for kids.');
+          return;
+        }
+      } else if (['Mentor', 'Admin'].includes(role)) {
+        if (age < 18) {
+          setError('Age must be 18 or above for mentors and admins.');
+          return;
+        }
       }
 
       const profileData = {
@@ -192,15 +200,15 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
         {/* Age */}
         <div style={{ marginBottom: '1.5rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#333' }}>
-            Age * (8-18 years)
+            Age * {role && ['Urban', 'Rural', 'NRI'].includes(role) ? '(8-17 years)' : '(18+ years)'}
           </label>
           <input
             type="number"
             value={age}
             onChange={(e) => setAge(e.target.value)}
             required
-            min="8"
-            max="18"
+            min={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "8" : "18"}
+            max={role && ['Urban', 'Rural', 'NRI'].includes(role) ? "17" : "100"}
             placeholder="Enter your age"
             style={{
               width: '100%',
