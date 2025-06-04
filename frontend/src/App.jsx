@@ -220,8 +220,8 @@ function App() {
       {users.length > 0 && (
         <div style={{
           position: 'fixed',
-          top: 10,
-          right: 10,
+          bottom: 10,
+          left: 10,
           maxWidth: 200,
           fontSize: '0.75rem',
           background: '#f0f0f0',
