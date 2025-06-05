@@ -577,9 +577,10 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
         {/* Quick Actions */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '1rem',
-          marginTop: '2rem'
+          marginTop: '2rem',
+          width: '100%'
         }}>
           <button
             onClick={() => onViewChange('profile')}
