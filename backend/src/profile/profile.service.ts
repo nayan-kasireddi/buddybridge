@@ -20,4 +20,11 @@ export class ProfileService {
     }
     return { message: 'Profile saved successfully' };
   }
+
+  async getProfile(uid: string) {
+    // Implementation for getting profile
+    // This should query your database for the user profile
+    // For now, returning null to indicate profile not found
+    return null;
+  }
 }
