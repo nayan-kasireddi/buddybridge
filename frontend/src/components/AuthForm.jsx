@@ -331,6 +331,7 @@ const AuthForm = ({ onAuthSuccess }) => {
                   border: '2px solid #e5e7eb',
                   borderRadius: '10px',
                   backgroundColor: '#fafafa',
+                  color: '#1a1a1a',
                   padding: '0 1rem 0 3rem',
                   transition: 'all 0.2s ease',
                   boxSizing: 'border-box'
@@ -384,6 +385,7 @@ const AuthForm = ({ onAuthSuccess }) => {
                   border: '2px solid #e5e7eb',
                   borderRadius: '10px',
                   backgroundColor: '#fafafa',
+                  color: '#1a1a1a',
                   padding: '0 1rem 0 3rem',
                   transition: 'all 0.2s ease',
                   boxSizing: 'border-box'
@@ -438,6 +440,7 @@ const AuthForm = ({ onAuthSuccess }) => {
                     border: confirmPassword && password !== confirmPassword ? '2px solid #ef4444' : '2px solid #e5e7eb',
                     borderRadius: '10px',
                     backgroundColor: '#fafafa',
+                    color: '#1a1a1a',
                     padding: '0 1rem 0 3rem',
                     transition: 'all 0.2s ease',
                     boxSizing: 'border-box'
