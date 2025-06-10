@@ -23,24 +23,7 @@ export class ProfileController {
     return this.profileService.upsertProfile(profileDto);
   }
 
-  @Put()
-  async updateProfile(@Body() profileDto: any, @Req() req: any) {
-    const idToken = req.headers.authorization?.split('Bearer ')[1];
-    if (!idToken) throw new UnauthorizedException('No token provided');
-
-    try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      if (decodedToken.uid !== profileDto.uid) {
-        throw new UnauthorizedException('UID mismatch');
-      }
-    } catch {
-      throw new UnauthorizedException('Invalid token');
-    }
-
-    return this.profileService.upsertProfile(profileDto);
-  }
-
-  @Get(':uid')
+    @Get(':uid')
   async getProfile(@Param('uid') uid: string, @Req() req: any) {
     const idToken = req.headers.authorization?.split('Bearer ')[1];
     if (!idToken) throw new UnauthorizedException('No token provided');
