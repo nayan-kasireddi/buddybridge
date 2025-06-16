@@ -34,9 +34,9 @@ export class ProfileService {
       language,
       interests: JSON.stringify(interests || []), // Store as JSON string
       availability,
-      profile_completed: profileCompleted,
-      created_at: createdAt,
-      updated_at: updatedAt
+      profileCompleted: profileCompleted !== undefined ? profileCompleted : true,
+      createdAt: createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
     const { error } = await this.supabase
@@ -68,9 +68,7 @@ export class ProfileService {
     const profile = {
       ...data,
       interests: data.interests ? JSON.parse(data.interests) : [],
-      profileCompleted: data.profileCompleted || true, // Default to true if profile exists
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt
+      profileCompleted: data.profileCompleted !== undefined ? data.profileCompleted : true
     };
 
     return profile;
