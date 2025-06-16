@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
+import HelpSupport from './HelpSupport';
 
 const Dashboard = ({ user, userProfile, onViewChange }) => {
   const [buddyPairs, setBuddyPairs] = useState([]);
@@ -7,6 +8,7 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
   const [recentSessions, setRecentSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showHelpSupport, setShowHelpSupport] = useState(false);
 
   useEffect(() => {
     if (user && userProfile) {
@@ -97,6 +99,10 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
       console.error('Logout error:', error);
     }
   };
+
+  if (showHelpSupport) {
+    return <HelpSupport onBack={() => setShowHelpSupport(false)} />;
+  }
 
   if (loading) {
     return (
@@ -623,21 +629,29 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
             </div>
           </div>
 
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            padding: '1.5rem',
-            textAlign: 'center',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
-          }}>
+          <button
+            onClick={() => setShowHelpSupport(true)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              cursor: 'pointer',
+              textAlign: 'center',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+              transition: 'transform 0.2s ease',
+              width: '100%'
+            }}
+            onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+          >
             <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>❓</div>
             <div style={{ fontWeight: '600', color: '#333' }}>Help & Support</div>
             <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
               Get assistance
             </div>
-          </div>
+          </button>
         </div>
 
         {error && (
