@@ -46,11 +46,7 @@ export class FeedbackService {
   async getFeedbackByUserId(userId: string) {
     const { data, error } = await this.supabase
       .from('feedbacks')
-      .select(`
-        *,
-        from_user:user_profiles!feedbacks_from_user_id_fkey(name, role),
-        to_user:user_profiles!feedbacks_to_user_id_fkey(name, role)
-      `)
+      .select('*')
       .or(`from_user_id.eq.${userId},to_user_id.eq.${userId}`)
       .order('created_at', { ascending: false });
 
@@ -65,11 +61,7 @@ export class FeedbackService {
   async getAllFeedback() {
     const { data, error } = await this.supabase
       .from('feedbacks')
-      .select(`
-        *,
-        from_user:user_profiles!feedbacks_from_user_id_fkey(name, role),
-        to_user:user_profiles!feedbacks_to_user_id_fkey(name, role)
-      `)
+      .select('*')
       .order('created_at', { ascending: false });
 
     if (error) {

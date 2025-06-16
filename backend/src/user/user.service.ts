@@ -48,7 +48,7 @@ export class UserService {
     const { data, error } = await supabase
       .from('user_profiles')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('createdAt', { ascending: false });
 
     if (error) {
       console.error('Error fetching user profiles:', error);
