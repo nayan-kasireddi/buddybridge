@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 import HelpSupport from './HelpSupport';
+import FeedbackForm from './FeedbackForm';
 
 const Dashboard = ({ user, userProfile, onViewChange }) => {
   const [buddyPairs, setBuddyPairs] = useState([]);
@@ -9,6 +10,8 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showHelpSupport, setShowHelpSupport] = useState(false);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackData, setFeedbackData] = useState([]);
 
   useEffect(() => {
     if (user && userProfile) {
@@ -46,6 +49,15 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
       if (recentResponse.ok) {
         const recent = await recentResponse.json();
         setRecentSessions(recent);
+      }
+
+      // Fetch user feedback
+      const feedbackResponse = await fetch(`https://buddybridge-backend-dlkk.onrender.com/feedback/user/${userProfile.uid}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (feedbackResponse.ok) {
+        const feedback = await feedbackResponse.json();
+        setFeedbackData(feedback);
       }
 
     } catch (err) {
@@ -100,8 +112,34 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
     }
   };
 
+  const handleFeedbackSubmit = () => {
+    // Refresh dashboard data after feedback submission
+    fetchDashboardData();
+  };
+
   if (showHelpSupport) {
     return <HelpSupport onBack={() => setShowHelpSupport(false)} />;
+  }
+
+  if (showFeedbackForm) {
+    return (
+      <>
+        {/* Render the current dashboard */}
+        <div style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+          filter: 'blur(5px)',
+          pointerEvents: 'none'
+        }}>
+          {/* Dashboard content would be here but blurred */}
+        </div>
+        <FeedbackForm
+          onClose={() => setShowFeedbackForm(false)}
+          onSubmit={handleFeedbackSubmit}
+          buddyName={buddyPairs.length > 0 ? buddyPairs[0].buddyName : 'your buddy'}
+        />
+      </>
+    );
   }
 
   if (loading) {
@@ -613,21 +651,29 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
             </div>
           </button>
 
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            padding: '1.5rem',
-            textAlign: 'center',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
-          }}>
+          <button
+            onClick={() => setShowFeedbackForm(true)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              cursor: 'pointer',
+              textAlign: 'center',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+              transition: 'transform 0.2s ease',
+              width: '100%'
+            }}
+            onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+          >
             <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💬</div>
             <div style={{ fontWeight: '600', color: '#333' }}>Give Feedback</div>
             <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
               Rate your sessions
             </div>
-          </div>
+          </button>
 
           <button
             onClick={() => setShowHelpSupport(true)}
