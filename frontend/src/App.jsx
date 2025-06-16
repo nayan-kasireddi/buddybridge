@@ -50,11 +50,18 @@ function App() {
         const profile = await response.json();
         console.log('Fetched profile:', profile); // Debug log
         // If profile exists and has basic required fields, consider it complete
-        if (profile && profile.name && profile.role && profile.age && profile.location) {
+        if (profile && profile.name && profile.role && profile.age && profile.location && profile.language) {
           console.log('Profile is complete, setting user profile');
           setUserProfile(profile);
         } else {
-          console.log('Profile incomplete or missing required fields');
+          console.log('Profile incomplete or missing required fields:', {
+            hasProfile: !!profile,
+            hasName: !!(profile?.name),
+            hasRole: !!(profile?.role),
+            hasAge: !!(profile?.age),
+            hasLocation: !!(profile?.location),
+            hasLanguage: !!(profile?.language)
+          });
           setUserProfile(null);
         }
       } else if (response.status === 404) {
