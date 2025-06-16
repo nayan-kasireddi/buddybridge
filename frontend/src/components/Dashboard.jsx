@@ -243,7 +243,9 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
                     fontSize: '0.9rem',
                     fontWeight: '600'
                   }}>
-                    {userProfile.role} Kid
+                    {userProfile.role === 'Admin' || userProfile.role === 'Mentor' 
+                      ? userProfile.role 
+                      : `${userProfile.role} Kid`}
                   </span>
                   <span style={{ color: '#666', fontSize: '1rem' }}>
                     📍 {userProfile.location}
