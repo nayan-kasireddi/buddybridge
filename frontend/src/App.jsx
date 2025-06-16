@@ -45,14 +45,16 @@ function App() {
           'Authorization': `Bearer ${token}`,
         },
       });
-      
+
       if (response.ok) {
         const profile = await response.json();
         console.log('Fetched profile:', profile); // Debug log
-        if (profile && profile.profileCompleted) {
+        // If profile exists and has basic required fields, consider it complete
+        if (profile && profile.name && profile.role && profile.age && profile.location) {
+          console.log('Profile is complete, setting user profile');
           setUserProfile(profile);
         } else {
-          console.log('No complete profile found, user needs to complete profile');
+          console.log('Profile incomplete or missing required fields');
           setUserProfile(null);
         }
       } else if (response.status === 404) {
@@ -158,7 +160,7 @@ function App() {
             }}>
               BuddyBridge
             </h2>
-            
+
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <button
                 onClick={() => setCurrentView('dashboard')}
