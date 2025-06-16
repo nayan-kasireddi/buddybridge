@@ -45,12 +45,26 @@ function App() {
           'Authorization': `Bearer ${token}`,
         },
       });
+      
       if (response.ok) {
         const profile = await response.json();
-        setUserProfile(profile);
+        console.log('Fetched profile:', profile); // Debug log
+        if (profile && profile.profileCompleted) {
+          setUserProfile(profile);
+        } else {
+          console.log('No complete profile found, user needs to complete profile');
+          setUserProfile(null);
+        }
+      } else if (response.status === 404) {
+        console.log('No profile found for user');
+        setUserProfile(null);
+      } else {
+        console.error('Error response:', response.status);
+        setUserProfile(null);
       }
     } catch (error) {
       console.error('Error fetching user profile:', error);
+      setUserProfile(null);
     }
   };
 
@@ -63,6 +77,7 @@ function App() {
   };
 
   const handleProfileComplete = (profile) => {
+    console.log('Profile completed:', profile); // Debug log
     setUserProfile(profile);
     setCurrentView('dashboard');
   };

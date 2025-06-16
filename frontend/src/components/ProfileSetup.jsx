@@ -59,7 +59,7 @@ export default function ProfileSetup({ onProfileComplete, existingProfile }) {
 
     const token = await user.getIdToken();
     const response = await fetch('https://buddybridge-backend-dlkk.onrender.com/profile', {
-      method: existingProfile ? 'PUT' : 'POST',
+      method: 'POST', // Always use POST since backend handles upsert
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
