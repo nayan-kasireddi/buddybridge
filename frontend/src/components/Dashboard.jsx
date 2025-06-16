@@ -623,7 +623,7 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
         {/* Quick Actions */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: userProfile?.role === 'Admin' ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)',
           gap: '1rem',
           marginTop: '2rem',
           width: '100%'
@@ -698,6 +698,32 @@ const Dashboard = ({ user, userProfile, onViewChange }) => {
               Get assistance
             </div>
           </button>
+
+          {userProfile?.role === 'Admin' && (
+            <button
+              onClick={() => onViewChange('admin')}
+              style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '16px',
+                padding: '1.5rem',
+                cursor: 'pointer',
+                textAlign: 'center',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.2s ease',
+                width: '100%'
+              }}
+              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+            >
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>👑</div>
+              <div style={{ fontWeight: '600', color: '#333' }}>Admin Panel</div>
+              <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
+                Manage platform
+              </div>
+            </button>
+          )}
         </div>
 
         {error && (

@@ -24,6 +24,11 @@ export class UserController {
     return users;
   }
 
+  @Get('profiles')
+  async getAllUserProfiles() {
+    return this.userService.getAllUserProfiles();
+  }
+
   // ✅ NEW: Save profile form data to Supabase
   @Post()
   @UseGuards(FirebaseAuthGuard)

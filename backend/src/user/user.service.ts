@@ -29,20 +29,34 @@ export class UserService {
   }
 
   async createOrUpdateUserProfile(uid: string, role: string, name: string, location: string) {
-  const { error } = await supabase.from('user_profiles').upsert({
-    uid,
-    role,
-    name,
-    location,
-  });
+    const { error } = await supabase.from('user_profiles').upsert({
+      uid,
+      role,
+      name,
+      location,
+    });
 
-  if (error) {
-    console.error('Error saving profile to Supabase:', error);
-    throw new Error('Failed to save user profile');
+    if (error) {
+      console.error('Error saving profile to Supabase:', error);
+      throw new Error('Failed to save user profile');
+    }
+
+    return { message: 'User profile saved successfully' };
   }
 
-  return { message: 'User profile saved successfully' };
-}
+  async getAllUserProfiles() {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching user profiles:', error);
+      throw new Error('Failed to fetch user profiles');
+    }
+
+    return data || [];
+  }
 
 }
 
