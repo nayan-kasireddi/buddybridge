@@ -3,9 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class ProfileService {
-  private supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY!
+ private supabase = createClient(
+    process.env.SUPABASE_URL || '',
+    process.env.SUPABASE_KEY || ''
   );
 
   async upsertProfile(profile: any) {
