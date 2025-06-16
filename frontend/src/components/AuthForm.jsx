@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login as signIn, signup as signUp } from '../firebaseAuth';
+import { login as signIn, signup as signUp, resetPassword } from '../firebaseAuth';
 
 const AuthForm = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState('');
@@ -9,6 +9,8 @@ const AuthForm = ({ onAuthSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   // Clear all fields and messages
   const clearForm = () => {
@@ -23,6 +25,35 @@ const AuthForm = ({ onAuthSuccess }) => {
   const toggleMode = () => {
     clearForm();
     setIsSignUp(!isSignUp);
+    setShowForgotPassword(false);
+  };
+
+  // Handle forgot password
+  const handleForgotPassword = async () => {
+    setError('');
+    setSuccess('');
+    
+    if (!email.trim()) {
+      setError('Please enter your email address to reset password.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      await resetPassword(email);
+      setSuccess('Password reset email sent! Please check your inbox and follow the instructions.');
+      setShowForgotPassword(false);
+    } catch (error) {
+      console.error('Password reset error:', error);
+      setError(getErrorMessage(error));
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   // Validate email format
@@ -415,6 +446,29 @@ const AuthForm = ({ onAuthSuccess }) => {
             </div>
           </div>
 
+          {!isSignUp && (
+            <div style={{ 
+              textAlign: 'right', 
+              marginBottom: '1.5rem',
+              marginTop: '-1rem'
+            }}>
+              <span
+                style={{
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'color 0.2s ease'
+                }}
+                onClick={() => setShowForgotPassword(true)}
+                onMouseEnter={(e) => e.target.style.color = '#5a6fd8'}
+                onMouseLeave={(e) => e.target.style.color = '#667eea'}
+              >
+                Forgot your password?
+              </span>
+            </div>
+          )}
+
           {isSignUp && (
             <div style={{ marginBottom: '2rem' }}>
               <label style={{ 
@@ -575,6 +629,160 @@ const AuthForm = ({ onAuthSuccess }) => {
           </span>
         </p>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotPassword && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          backdropFilter: 'blur(4px)'
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '2rem',
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+            maxWidth: '400px',
+            width: '90%',
+            margin: '1rem'
+          }}>
+            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <h3 style={{ 
+                fontSize: '1.5rem',
+                color: '#1a1a1a',
+                marginBottom: '0.5rem',
+                fontWeight: '600'
+              }}>
+                Reset Your Password
+              </h3>
+              <p style={{ 
+                fontSize: '0.9rem', 
+                color: '#666',
+                margin: 0
+              }}>
+                Enter your email address and we'll send you a link to reset your password.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ 
+                display: 'block',
+                fontSize: '0.9rem', 
+                fontWeight: '600', 
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Email Address
+              </label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  fontSize: '1rem',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  backgroundColor: '#fafafa',
+                  color: '#1a1a1a',
+                  padding: '0 1rem',
+                  transition: 'all 0.2s ease',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#667eea';
+                  e.target.style.backgroundColor = '#ffffff';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e5e7eb';
+                  e.target.style.backgroundColor = '#fafafa';
+                }}
+              />
+            </div>
+
+            <div style={{ 
+              display: 'flex', 
+              gap: '1rem',
+              justifyContent: 'flex-end'
+            }}>
+              <button
+                onClick={() => setShowForgotPassword(false)}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  background: 'transparent',
+                  color: '#666',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#d1d5db';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.borderColor = '#e5e7eb';
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleForgotPassword}
+                disabled={resetLoading}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  background: resetLoading ? '#9ca3af' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: resetLoading ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+                onMouseEnter={(e) => {
+                  if (!resetLoading) {
+                    e.target.style.background = 'linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!resetLoading) {
+                    e.target.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                  }
+                }}
+              >
+                {resetLoading && (
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid #ffffff',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
+                )}
+                {resetLoading ? 'Sending...' : 'Send Reset Email'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes spin {
