@@ -32,7 +32,7 @@ export class ProfileService {
       age,
       location,
       language,
-      interests: JSON.stringify(interests || []), // Store as JSON string
+      interests: interests || [], // Store as array directly
       availability,
       profileCompleted: profileCompleted !== undefined ? profileCompleted : true,
       createdAt: createdAt || new Date().toISOString(),
@@ -67,7 +67,7 @@ export class ProfileService {
     // Convert back to frontend format
     const profile = {
       ...data,
-      interests: data.interests ? JSON.parse(data.interests) : [],
+      interests: Array.isArray(data.interests) ? data.interests : [],
       profileCompleted: data.profileCompleted !== undefined ? data.profileCompleted : true
     };
 
