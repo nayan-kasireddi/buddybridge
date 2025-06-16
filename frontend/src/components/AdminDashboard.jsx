@@ -197,20 +197,7 @@ const AdminDashboard = ({ user, onViewChange }) => {
               Manage users, create pairings, and monitor platform activity
             </p>
           </div>
-          <button
-            onClick={() => onViewChange('dashboard')}
-            style={{
-              background: '#667eea',
-              color: 'white',
-              border: 'none',
-              padding: '0.8rem 1.5rem',
-              borderRadius: '12px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            Back to Dashboard
-          </button>
+          
         </div>
 
         {/* Quick Stats */}

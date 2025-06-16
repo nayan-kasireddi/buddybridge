@@ -96,12 +96,21 @@ function App() {
       return <ProfileSetup onProfileComplete={handleProfileComplete} />;
     }
 
+    // Redirect admins directly to admin panel
+    if (userProfile.role === 'Admin' && currentView === 'dashboard') {
+      setCurrentView('admin');
+    }
+
     switch (currentView) {
       case 'admin':
         return <AdminDashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
       case 'profile':
         return <ProfileSetup onProfileComplete={handleProfileComplete} existingProfile={userProfile} />;
       default:
+        // For non-admin users, show dashboard; for admins, show admin panel
+        if (userProfile.role === 'Admin') {
+          return <AdminDashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
+        }
         return <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
     }
   };
@@ -169,20 +178,22 @@ function App() {
             </h2>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <button
-                onClick={() => setCurrentView('dashboard')}
-                style={{
-                  background: currentView === 'dashboard' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
-                  color: currentView === 'dashboard' ? 'white' : '#667eea',
-                  border: '2px solid #667eea',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: '600'
-                }}
-              >
-                Dashboard
-              </button>
+              {userProfile?.role !== 'Admin' && (
+                <button
+                  onClick={() => setCurrentView('dashboard')}
+                  style={{
+                    background: currentView === 'dashboard' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                    color: currentView === 'dashboard' ? 'white' : '#667eea',
+                    border: '2px solid #667eea',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  Dashboard
+                </button>
+              )}
 
               {userProfile?.role === 'Admin' && (
                 <button
