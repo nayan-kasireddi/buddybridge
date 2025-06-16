@@ -3,7 +3,7 @@ import { fetchUsers } from './apiClient';
 import AuthForm from './components/AuthForm';
 import Dashboard from './components/Dashboard';
 import ProfileSetup from './components/ProfileSetup';
-// Removed import AdminDashboard
+import AdminDashboard from './components/AdminDashboard';
 import { logout } from './firebaseAuth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -98,7 +98,7 @@ function App() {
 
     switch (currentView) {
       case 'admin':
-        return <Dashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
+        return <AdminDashboard user={user} userProfile={userProfile} onViewChange={setCurrentView} />;
       case 'profile':
         return <ProfileSetup onProfileComplete={handleProfileComplete} existingProfile={userProfile} />;
       default:
